@@ -1,23 +1,23 @@
 document.addEventListener("DOMContentLoaded", function () {
   const cake = document.querySelector(".cake");
+  const stack = document.querySelector(".stack");
+  const hb = document.querySelector(".hb");
+  const muteButton = document.getElementById("toggleMute");
+
   const candleCountDisplay = document.getElementById("candleCount");
   let candles = [];
+
   let audioContext;
   let micStream;
   let analyser;
   let microphone;
   let audio = new Audio('pavlo-zibrov-den-narodzhennya.mp3');
 
-  const stack = document.querySelector(".stack");
-  const hb = document.querySelector(".hb");
-
-  const muteButton = document.getElementById("toggleMute");
-
   muteButton.addEventListener("click", () => {
     audio.muted = !audio.muted;
-    muteButton.textContent = audio.muted ? "🔇" : "🔊";
+    const icon = document.querySelector("#toggleMute i");
+    icon.className = audio.muted ? "fa-solid fa-volume-xmark" : "fa-solid fa-volume-high";
   });
-
 
   function setupSwipe(card) {
     let startX = 0;
@@ -30,9 +30,21 @@ document.addEventListener("DOMContentLoaded", function () {
       card.style.transition = "none";
     };
 
+    const onMouseDown = (e) => {
+      startX = e.clientX;
+      isDragging = true;
+      card.style.transition = "none";
+    };
+
     const onTouchMove = (e) => {
       if (!isDragging) return;
       currentX = e.touches[0].clientX - startX;
+      card.style.transform = `translateX(${currentX}px) rotate(${currentX / 20}deg)`;
+    };
+
+    const onMouseMove = (e) => {
+      if (!isDragging) return;
+      currentX = e.clientX - startX;
       card.style.transform = `translateX(${currentX}px) rotate(${currentX / 20}deg)`;
     };
 
@@ -51,18 +63,6 @@ document.addEventListener("DOMContentLoaded", function () {
         card.style.transition = "transform 0.3s ease";
         card.style.transform = "translateX(0) rotate(0)";
       }
-    };
-
-    const onMouseDown = (e) => {
-      startX = e.clientX;
-      isDragging = true;
-      card.style.transition = "none";
-    };
-
-    const onMouseMove = (e) => {
-      if (!isDragging) return;
-      currentX = e.clientX - startX;
-      card.style.transform = `translateX(${currentX}px) rotate(${currentX / 20}deg)`;
     };
 
     card.addEventListener("touchstart", onTouchStart);
@@ -141,13 +141,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     let average = sum / bufferLength;
 
-    return average > 50;
+    return average > 60;
   }
 
   function blowOutCandles() {
     let blownOut = 0;
 
-    // Only check for blowing if there are candles and at least one is not blown out
     if (candles.length > 0 && candles.some((candle) => !candle.classList.contains("out"))) {
       if (isBlowing()) {
         candles.forEach((candle) => {
@@ -162,15 +161,15 @@ document.addEventListener("DOMContentLoaded", function () {
         updateCandleCount();
       }
 
-      // If all candles are blown out, trigger confetti after a small delay
       if (candles.every((candle) => candle.classList.contains("out"))) {
         setTimeout(function() {
           micStream?.getTracks().forEach(track => track.stop());
           triggerConfetti();
-          endlessConfetti(); // Start the endless confetti
+          endlessConfetti();
           cake.classList.add("invisible");
           stack.classList.remove("invisible");
           hb.classList.remove("invisible");
+          muteButton.classList.remove("invisible");
           const cards = document.querySelectorAll(".card");
           cards.forEach(setupSwipe);
           setupStack();

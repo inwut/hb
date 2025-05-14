@@ -30,9 +30,12 @@ body {
 
 .card p {
   font-family: "Caveat", cursive;
+  height: 85%;
   font-optical-sizing: auto;
   font-style: normal;
   padding: 25px;
+  margin: 0;
+  overflow-y: scroll;
 }
 
 .card:nth-child(1) { z-index: 3; transform: none;}
@@ -54,7 +57,7 @@ body {
   padding: 10px;
   border-radius: 10px;
   width: fit-content;
-  margin: 20px auto 50px;
+  margin: 70px auto 50px;
 }
 
 #candleCount {
@@ -78,6 +81,10 @@ body {
   position: absolute;
   top: 10px;
   right: 10px;
+}
+
+#toggleMute i {
+  color: #ff8fab;
 }
 
 
