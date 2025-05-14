@@ -11,6 +11,14 @@ document.addEventListener("DOMContentLoaded", function () {
   const stack = document.querySelector(".stack");
   const hb = document.querySelector(".hb");
 
+  const muteButton = document.getElementById("toggleMute");
+
+  muteButton.addEventListener("click", () => {
+    audio.muted = !audio.muted;
+    muteButton.textContent = audio.muted ? "🔇" : "🔊";
+  });
+
+
   function setupSwipe(card) {
     let startX = 0;
     let currentX = 0;
