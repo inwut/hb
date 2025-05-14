@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const candleCountDisplay = document.getElementById("candleCount");
   let candles = [];
   let audioContext;
+  let micStream;
   let analyser;
   let microphone;
   let audio = new Audio('pavlo-zibrov-den-narodzhennya.mp3');
@@ -44,9 +45,24 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     };
 
+    const onMouseDown = (e) => {
+      startX = e.clientX;
+      isDragging = true;
+      card.style.transition = "none";
+    };
+
+    const onMouseMove = (e) => {
+      if (!isDragging) return;
+      currentX = e.clientX - startX;
+      card.style.transform = `translateX(${currentX}px) rotate(${currentX / 20}deg)`;
+    };
+
     card.addEventListener("touchstart", onTouchStart);
     card.addEventListener("touchmove", onTouchMove);
     card.addEventListener("touchend", onTouchEnd);
+    card.addEventListener("mousedown", onMouseDown);
+    document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mouseup", onTouchEnd);
   }
 
   function resetCard(card) {
@@ -141,6 +157,7 @@ document.addEventListener("DOMContentLoaded", function () {
       // If all candles are blown out, trigger confetti after a small delay
       if (candles.every((candle) => candle.classList.contains("out"))) {
         setTimeout(function() {
+          micStream?.getTracks().forEach(track => track.stop());
           triggerConfetti();
           endlessConfetti(); // Start the endless confetti
           cake.classList.add("invisible");
@@ -162,6 +179,7 @@ document.addEventListener("DOMContentLoaded", function () {
     navigator.mediaDevices
       .getUserMedia({ audio: true })
       .then(function (stream) {
+        micStream = stream;
         audioContext = new (window.AudioContext || window.webkitAudioContext)();
         analyser = audioContext.createAnalyser();
         microphone = audioContext.createMediaStreamSource(stream);
