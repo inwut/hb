@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const cake = document.querySelector(".cake");
   const stack = document.querySelector(".stack");
   const hb = document.querySelector(".hb");
+  const instructions = document.querySelector(".instructions");
   const muteButton = document.getElementById("toggleMute");
 
   const candleCountDisplay = document.getElementById("candleCount");
@@ -85,19 +86,23 @@ document.addEventListener("DOMContentLoaded", function () {
       if (index === 0) {
         card.style.transform = "none";
       } else if (index === 1) {
-        card.style.transform = "rotate(-6deg)";
+        card.style.transform = "rotate(-8deg)";
       } else if (index === 2) {
-        card.style.transform = "rotate(-4deg)";
+        card.style.transform = "rotate(-6deg)";
       } else if (index === 3) {
-        card.style.transform = "rotate(-2deg)";
+        card.style.transform = "rotate(-4deg)";
       } else if (index === 4) {
-        card.style.transform = "rotate(2deg)";
+        card.style.transform = "rotate(-2deg)";
       } else if (index === 5) {
-        card.style.transform = "rotate(4deg)";
+        card.style.transform = "rotate(2deg)";
       } else if (index === 6) {
-        card.style.transform = "rotate(6deg)";
+        card.style.transform = "rotate(4deg)";
       } else if (index === 7) {
+        card.style.transform = "rotate(6deg)";
+      } else if (index === 8) {
         card.style.transform = "rotate(8deg)";
+      } else if (index === 9) {
+        card.style.transform = "rotate(10deg)";
       }
     });
   }
@@ -167,6 +172,7 @@ document.addEventListener("DOMContentLoaded", function () {
           triggerConfetti();
           endlessConfetti();
           cake.classList.add("invisible");
+          instructions.classList.add("invisible");
           stack.classList.remove("invisible");
           hb.classList.remove("invisible");
           muteButton.classList.remove("invisible");
